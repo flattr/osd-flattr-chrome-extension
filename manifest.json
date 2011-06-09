@@ -4,10 +4,14 @@
   "description": "This extension gives an easy way to flattr the website you are on.",
   "background_page": "background.html",
   "page_action": {
-    "default_icon": "icon.png"
+    "default_icon": "icon_128.png",
+    "default_title": "Flattr this!"
   },
   "permissions": [
     "tabs",
     "https://flattr.com/"
-  ]
+  ],
+  "icons": {
+    "128": "icon_128.png"
+  }
 }

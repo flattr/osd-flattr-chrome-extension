@@ -3,10 +3,10 @@
 		<script src="md5.js"></script>
 		<script>
 
+			// Returns the flattr.com thing URL for the given URL.
 			function convertToThingUrl(url) {
 				// Remove any trailing slash, just like Flattr likes it
 				if (url.charAt(url.length-1) == '/') {
-					console.log(url);
 					url = url.slice(0, url.length-1);
 				}
 				return 'https://flattr.com/thing/' + hex_md5(url);
@@ -15,9 +15,10 @@
 			// Listen for any changes to the URL of any tab. If URL
 			// exists, we show our extension icon in the address field.
 			chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-				var url = convertToThingUrl(tab.url);
-				var xhr = new XMLHttpRequest();
-				xhr.open("GET", url, true);
+				var url = convertToThingUrl(tab.url),
+					xhr = new XMLHttpRequest();
+
+				xhr.open("GET", url, true); // HEAD makes a 400 Bad Request...
 				xhr.onreadystatechange = function() {
 					if (xhr.readyState == 4) {
 						if (xhr.status == 200 || xhr.status == 304) {
@@ -28,7 +29,9 @@
 				xhr.send();
 			});
 
-			chrome.pageAction.onClicked.addListener(function(tab) {
+			// When the icon in address field is clicked, we open the flattr.com
+			// thing page in a new tab/window.
+			chrome.pageAction.onClicked.addListener(function (tab) {
 				window.open(convertToThingUrl(tab.url));
 			});
 

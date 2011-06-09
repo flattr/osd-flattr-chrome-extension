@@ -1,7 +1,7 @@
 Open Source Day Flattr Chrome Extension
 =======================================
 
-Get a nice little icon in the address field when visiting a website that can ve flattred. Clicking the icon takes you to the thing page on flattr.com!
+This extension for Google Chrome displays a Flattr icon in the address field when the website you are on can be flattred. Clicking the icon takes you to the thing page on flattr.com!
 
 Testing
 -------
@@ -14,6 +14,4 @@ Testing
 Build
 -----
 
-There's a prebuilt Chrome Extension File (.crx) at:
-
-    http://www.perthulin.com/static/osd-flattr-chrome-extension.crx
+There's a pre-built Chrome Extension File (.crx) at: [http://www.perthulin.com/static/osd-flattr-chrome-extension.crx](http://www.perthulin.com/static/osd-flattr-chrome-extension.crx)

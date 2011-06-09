@@ -4,8 +4,11 @@
 		<script>
 
 			function convertToThingUrl(url) {
-				// Flattr uses URLs w/o trailing slash
-				url = url.slice(0, url.length-1);
+				// Remove any trailing slash, just like Flattr likes it
+				if (url.charAt(url.length-1) == '/') {
+					console.log(url);
+					url = url.slice(0, url.length-1);
+				}
 				return 'https://flattr.com/thing/' + hex_md5(url);
 			}
 

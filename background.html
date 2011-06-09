@@ -6,20 +6,28 @@
 			function convertToThingUrl(url) {
 				// Flattr uses URLs w/o trailing slash
 				url = url.slice(0, url.length-1);
-				url = 'http://flattr.com/thing/' + hex_md5(url);
-				return url;
+				return 'https://flattr.com/thing/' + hex_md5(url);
 			}
 
-			// Listen for any changes to the URL of any tab
+			// Listen for any changes to the URL of any tab. If URL
+			// exists, we show our extension icon in the address field.
 			chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-				chrome.pageAction.show(tabId);
+				var url = convertToThingUrl(tab.url);
+				var xhr = new XMLHttpRequest();
+				xhr.open("GET", url, true);
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState == 4) {
+						if (xhr.status == 200 || xhr.status == 304) {
+							chrome.pageAction.show(tabId);
+						}
+					}
+				}
+				xhr.send();
 			});
 
 			chrome.pageAction.onClicked.addListener(function(tab) {
 				window.open(convertToThingUrl(tab.url));
 			});
-
-			chrome.pageAction.show(tabId);
 
 		</script>
 	</head>

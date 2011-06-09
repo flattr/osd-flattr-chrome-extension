@@ -1,6 +1,6 @@
 {
   "name": "Flattr",
-  "version": "0.1",
+  "version": "0.2",
   "description": "This extension gives an easy way to flattr the website you are on.",
   "background_page": "background.html",
   "page_action": {
@@ -8,6 +8,6 @@
   },
   "permissions": [
     "tabs",
-    "http://flattr.com/"
+    "https://flattr.com/"
   ]
 }

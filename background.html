@@ -1,0 +1,26 @@
+<html>
+	<head>
+		<script src="md5.js"></script>
+		<script>
+
+			function convertToThingUrl(url) {
+				// Flattr uses URLs w/o trailing slash
+				url = url.slice(0, url.length-1);
+				url = 'http://flattr.com/thing/' + hex_md5(url);
+				return url;
+			}
+
+			// Listen for any changes to the URL of any tab
+			chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+				chrome.pageAction.show(tabId);
+			});
+
+			chrome.pageAction.onClicked.addListener(function(tab) {
+				window.open(convertToThingUrl(tab.url));
+			});
+
+			chrome.pageAction.show(tabId);
+
+		</script>
+	</head>
+</html>

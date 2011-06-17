@@ -1,6 +1,6 @@
 {
-  "name": "Flattr",
-  "version": "0.3",
+  "name": "Fast Flattr",
+  "version": "0.4",
   "description": "This extension gives an easy way to flattr the website you are on.",
   "background_page": "background.html",
   "page_action": {

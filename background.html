@@ -1,40 +1,49 @@
 <html>
-	<head>
-		<script src="md5.js"></script>
-		<script>
+    <head>
+        <script src="md5.js"></script>
+        <script>
+			var correctThingUrl;
 
-			// Returns the flattr.com thing URL for the given URL.
-			function convertToThingUrl(url) {
-				// Remove any trailing slash, just like Flattr likes it
-				if (url.charAt(url.length-1) == '/') {
-					url = url.slice(0, url.length-1);
+            function showIconIfAnyUrlExists(urls, tabId) {
+                var xhr = new XMLHttpRequest(),
+                    url = urls.pop(0),
+					thingUrl = 'https://flattr.com/thing/' + hex_md5(url);
+
+                xhr.open("GET", thingUrl, true); // HEAD makes a 400 Bad Request...
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200 || xhr.status == 304) {
+                            chrome.pageAction.show(tabId);
+							correctThingUrl = thingUrl;
+                        } else if (urls.length) {
+                            showIconIfAnyUrlExists(urls, tabId);
+                        }
+                    }
+                }
+                xhr.send();
+            }
+
+            // Listen for any changes to the URL of any tab. If URL
+            // exists, we show our extension icon in the address field.
+            chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+                var url = tab.url,
+                    urls = [url];
+
+                if (url.charAt(url.length-1) == '/') {
+                    urls.push(url.slice(0, url.length-1));
+				} else {
+                    urls.push(url + '/');
 				}
-				return 'https://flattr.com/thing/' + hex_md5(url);
-			}
 
-			// Listen for any changes to the URL of any tab. If URL
-			// exists, we show our extension icon in the address field.
-			chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-				var url = convertToThingUrl(tab.url),
-					xhr = new XMLHttpRequest();
+                showIconIfAnyUrlExists(urls, tabId);
+            });
 
-				xhr.open("GET", url, true); // HEAD makes a 400 Bad Request...
-				xhr.onreadystatechange = function() {
-					if (xhr.readyState == 4) {
-						if (xhr.status == 200 || xhr.status == 304) {
-							chrome.pageAction.show(tabId);
-						}
-					}
-				}
-				xhr.send();
-			});
+            // When the icon in address field is clicked, we open the flattr.com
+            // thing page in a new tab/window.
+            chrome.pageAction.onClicked.addListener(function (tab) {
+                window.open(correctThingUrl);
+            });
 
-			// When the icon in address field is clicked, we open the flattr.com
-			// thing page in a new tab/window.
-			chrome.pageAction.onClicked.addListener(function (tab) {
-				window.open(convertToThingUrl(tab.url));
-			});
-
-		</script>
-	</head>
+        </script>
+    </head>
 </html>

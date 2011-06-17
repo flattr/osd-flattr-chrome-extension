@@ -2,19 +2,19 @@
     <head>
         <script src="md5.js"></script>
         <script>
-			var correctThingUrl;
+            var correctThingUrl;
 
             function showIconIfAnyUrlExists(urls, tabId) {
                 var xhr = new XMLHttpRequest(),
                     url = urls.pop(0),
-					thingUrl = 'https://flattr.com/thing/' + hex_md5(url);
+                    thingUrl = 'https://flattr.com/thing/' + hex_md5(url);
 
                 xhr.open("GET", thingUrl, true); // HEAD makes a 400 Bad Request...
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4) {
                         if (xhr.status == 200 || xhr.status == 304) {
                             chrome.pageAction.show(tabId);
-							correctThingUrl = thingUrl;
+                            correctThingUrl = thingUrl;
                         } else if (urls.length) {
                             showIconIfAnyUrlExists(urls, tabId);
                         }
@@ -29,11 +29,13 @@
                 var url = tab.url,
                     urls = [url];
 
+                // Make sure both the URL with trailing slash and without are
+                // being looked for.
                 if (url.charAt(url.length-1) == '/') {
                     urls.push(url.slice(0, url.length-1));
-				} else {
+                } else {
                     urls.push(url + '/');
-				}
+                }
 
                 showIconIfAnyUrlExists(urls, tabId);
             });

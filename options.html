@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            textarea {
+                display: block;
+                width: 300px;
+                height: 400px;
+            }
+        </style>
+        <script>
+            function updateWhiteList() {
+                var checkbox = document.getElementById("enableWhiteList"),
+                    textarea = document.getElementById("whiteListDomains"),
+                    domains = textarea.value.split('\n');
+
+                textarea.disabled = !checkbox.checked;
+                localStorage['enableWhiteList'] = JSON.stringify(checkbox.checked);
+                localStorage['whiteListDomains'] = JSON.stringify(domains);
+            }
+        </script>
+    </head>
+
+    <body>
+        <h1>Fast Flattr Options</h1>
+        <div id="whiteList">
+            <input type="checkbox" onchange="updateWhiteList()" id="enableWhiteList" name="enableWhiteList" />
+            <label for="enableWhiteList">Enable only for these websites (one address per line)</label>
+            <textarea id="whiteListDomains" onkeyup="updateWhiteList()"></textarea>
+        </div>
+    </body>
+
+    <script>
+        var checkbox = document.getElementById("enableWhiteList"),
+            textarea = document.getElementById("whiteListDomains"),
+            domains = JSON.parse(localStorage["whiteListDomains"] || "[]");
+
+        checkbox.checked = JSON.parse(localStorage["enableWhiteList"] || "false");
+        textarea.value = domains.join("\n");
+    </script>
+</html>

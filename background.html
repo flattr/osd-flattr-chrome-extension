@@ -4,22 +4,22 @@
         <script>
             var correctThingUrl;
 
-			function isBlocked(url) {
-				var i = 0,
-					domains = JSON.parse(localStorage["whiteListDomains"] || "[]");
+            function isBlocked(url) {
+                var i = 0,
+                    domains = JSON.parse(localStorage["whiteListDomains"] || "[]");
 
-				if (!JSON.parse(localStorage["enableWhiteList"] || "false")) {
-					return false;
-				}
+                if (!JSON.parse(localStorage["enableWhiteList"] || "false")) {
+                    return false;
+                }
 
-				for (i = 0; i < domains.length; i += 1) {
-					if (url.match("(http|https)://(www.)?(" + domains[i] + ")")) {
-						return false;
-					}
-				}
+                for (i = 0; i < domains.length; i += 1) {
+                    if (url.match("(http|https)://(www.)?(" + domains[i] + ")")) {
+                        return false;
+                    }
+                }
 
-				return true;
-			}
+                return true;
+            }
 
             function showIconIfAnyUrlExists(urls, tabId) {
                 var xhr = new XMLHttpRequest(),
@@ -46,9 +46,9 @@
                 var url = tab.url,
                     urls = [url];
 
-				if (isBlocked(url)) {
-					return;
-				}
+                if (isBlocked(url)) {
+                    return;
+                }
 
                 // Make sure both the URL with trailing slash and without are
                 // being looked for.

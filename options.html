@@ -2,40 +2,33 @@
 <html>
     <head>
         <style>
-            textarea {
-                display: block;
-                width: 300px;
-                height: 400px;
+            ul {
+                padding: 0;
+            }
+            li {
+                list-style-type: none;
             }
         </style>
-        <script>
-            function updateWhiteList() {
-                var checkbox = document.getElementById("enableWhiteList"),
-                    textarea = document.getElementById("whiteListDomains"),
-                    domains = textarea.value.split('\n');
-
-                textarea.disabled = !checkbox.checked;
-                localStorage['enableWhiteList'] = JSON.stringify(checkbox.checked);
-                localStorage['whiteListDomains'] = JSON.stringify(domains);
-            }
-        </script>
+        <script src="options.js"></script>
     </head>
 
     <body>
         <h1>Fast Flattr Options</h1>
         <div id="whiteList">
-            <input type="checkbox" onchange="updateWhiteList()" id="enableWhiteList" name="enableWhiteList" />
-            <label for="enableWhiteList">Enable only for these websites (one address per line)</label>
-            <textarea id="whiteListDomains" onkeyup="updateWhiteList()"></textarea>
+            <div>
+                <input type="checkbox" onchange="toggleWhiteList(this)" id="enableWhiteList" name="enableWhiteList" />
+                <label for="enableWhiteList">Enable only for these websites (one address per line)</label>
+            </div>
+            <ul id="whiteListDomains">
+            </ul>
+            <div id="addForm">
+                <input type="text" placeholder="flattr.com"/>
+                <button onclick="add()">Add</button>
+            </div>
         </div>
     </body>
 
     <script>
-        var checkbox = document.getElementById("enableWhiteList"),
-            textarea = document.getElementById("whiteListDomains"),
-            domains = JSON.parse(localStorage["whiteListDomains"] || "[]");
-
-        checkbox.checked = JSON.parse(localStorage["enableWhiteList"] || "false");
-        textarea.value = domains.join("\n");
+        main();
     </script>
 </html>

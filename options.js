@@ -33,16 +33,32 @@ function excludeFromArray(a, v) {
     return ret;
 }
 
+function normalizeUrl(url) {
+    console.log(url);
+    if (url.match('http://')) {
+        url = url.substring(7);
+    }
+    if (url.match('www.')) {
+        url = url.substring(4);
+    }
+    if (url[url.length-1] === '/') {
+        url = url.substring(0, url.length-1);
+    }
+    return url;
+}
+
 function add() {
     var elem = document.querySelector("#addForm input"),
+        url = normalizeUrl(elem.value),
         domains = JSON.parse(localStorage["whiteListDomains"] || JSON.stringify(POPULAR_DOMAINS));
-
-    domains.push(elem.value);
-    localStorage['whiteListDomains'] = JSON.stringify(domains);
 
     elem.value = '';
 
-    reloadList();
+    if (url.length > 0 & !arrayContains(domains, url)) {
+        domains.push(url);
+        localStorage['whiteListDomains'] = JSON.stringify(domains);
+        reloadList();
+    }
 }
 
 function toggleWhiteList(elem) {

@@ -10,7 +10,7 @@
   },
   "permissions": [
     "tabs",
-    "https://flattr.com/"
+    "https://api.flattr.com/"
   ],
   "icons": {
     "48": "icon_48.png",

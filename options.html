@@ -13,16 +13,16 @@
     </head>
 
     <body>
-        <h1>Fast Flattr Options</h1>
+        <h1>Options</h1>
         <div id="whiteList">
             <div>
                 <input type="checkbox" onchange="toggleWhiteList(this)" id="enableWhiteList" name="enableWhiteList" />
-                <label for="enableWhiteList">Enable only for these websites (one address per line)</label>
+                <label for="enableWhiteList">Enable only for these websites</label>
             </div>
             <ul id="whiteListDomains">
             </ul>
             <div id="addForm">
-                <input type="text" placeholder="flattr.com"/>
+                <input type="text" placeholder="flattr.com" onkeyup="keyUpCallback(event)"/>
                 <button onclick="add()">Add</button>
             </div>
         </div>

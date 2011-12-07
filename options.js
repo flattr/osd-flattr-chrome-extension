@@ -21,6 +21,12 @@ function arrayContains(a, v) {
     return false;
 }
 
+function keyUpCallback(e) {
+    if (e.keyCode === 13) {
+        add();
+    }
+}
+
 function excludeFromArray(a, v) {
     var i,
         ret = [];

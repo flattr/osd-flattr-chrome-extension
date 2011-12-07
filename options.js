@@ -1,8 +1,10 @@
 var POPULAR_DOMAINS = [
+    "wikipedia.org",
     "youtube.com",
     "twitter.com",
-    "soundcloud.com",
     "youtify.com",
+    "soundcloud.com",
+    "grooveshark.com",
     "github.com",
     "flattr.com"
 ];

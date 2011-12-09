@@ -3,7 +3,6 @@
   "version": "0.5",
   "description": "This extension gives an easy way to flattr the website you are on.",
   "background_page": "background.html",
-  "options_page": "options.html",
   "page_action": {
     "default_icon": "icon_128.png",
     "default_title": "Flattr this!"

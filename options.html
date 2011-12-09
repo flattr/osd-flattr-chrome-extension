@@ -8,17 +8,35 @@
             li {
                 list-style-type: none;
             }
+            #whiteList {
+                position: relative;
+            }
+            #whiteList .blocker {
+                display: none;
+            }
+            #whiteList.disabled .blocker {
+                display: block;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background: #ccc;
+                opacity: 0.3;
+                z-index: 10;
+            }
         </style>
         <script src="options.js"></script>
     </head>
 
     <body>
         <h1>Options</h1>
+
+        <div>
+            <input type="checkbox" onchange="toggleWhiteList(this)" id="enableWhiteList" name="enableWhiteList" />
+            <label for="enableWhiteList">Enable only for these websites:</label>
+        </div>
+
         <div id="whiteList">
-            <div>
-                <input type="checkbox" onchange="toggleWhiteList(this)" id="enableWhiteList" name="enableWhiteList" />
-                <label for="enableWhiteList">Enable only for these websites</label>
-            </div>
+            <div class="blocker"></div>
             <ul id="whiteListDomains">
             </ul>
             <div id="addForm">

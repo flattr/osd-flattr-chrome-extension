@@ -1,4 +1,4 @@
-var POPULAR_DOMAINS = [
+var HARDCODED_WHITELIST = [
     "wikipedia.org",
     "youtube.com",
     "twitter.com",
@@ -42,7 +42,6 @@ function excludeFromArray(a, v) {
 }
 
 function normalizeUrl(url) {
-    console.log(url);
     if (url.match('http://')) {
         url = url.substring(7);
     }
@@ -58,7 +57,7 @@ function normalizeUrl(url) {
 function add() {
     var elem = document.querySelector("#addForm input"),
         url = normalizeUrl(elem.value),
-        domains = JSON.parse(localStorage["whiteListDomains"] || JSON.stringify(POPULAR_DOMAINS));
+        domains = JSON.parse(localStorage["whiteListDomains"] || JSON.stringify(HARDCODED_WHITELIST));
 
     elem.value = '';
 
@@ -71,6 +70,11 @@ function add() {
 
 function toggleWhiteList(elem) {
     localStorage['enableWhiteList'] = JSON.stringify(elem.checked);
+    if (elem.checked) {
+        document.getElementById("whiteList").removeAttribute("class");
+    } else {
+        document.getElementById("whiteList").setAttribute("class", "disabled");
+    }
 }
 
 function reloadList() {
@@ -102,7 +106,7 @@ function createLi(domain, whiteListDomains) {
 
 function renderDomains() {
     var ul = document.getElementById("whiteListDomains"),
-        domains = JSON.parse(localStorage["whiteListDomains"] || JSON.stringify(POPULAR_DOMAINS)),
+        domains = JSON.parse(localStorage["whiteListDomains"] || JSON.stringify(HARDCODED_WHITELIST)),
         i;
 
     for (i = 0; i < domains.length; i += 1) {
@@ -112,5 +116,7 @@ function renderDomains() {
 
 function main() {
     var checkbox = document.getElementById("enableWhiteList");
+    checkbox.checked = JSON.parse(localStorage['enableWhiteList'] || "false");
+    toggleWhiteList(checkbox);
     renderDomains();
 }

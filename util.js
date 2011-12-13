@@ -6,21 +6,44 @@ var WHITELIST = [
     "jamendo.com",
     "soundcloud.com",
     "grooveshark.com",
+    "kahvi.org",
     "github.com",
+    "sourceforge.net",
     "flattr.com"
 ];
 
+function getFlattrLangCodeForWikipediaUrl(url) {
+    var ret = 'en_GB';
+    var map = {
+        'en': 'en_GB',
+        'es': 'es_ES',
+        'de': 'de_DE',
+        'fr': 'fr_FR',
+        'it': 'it_IT',
+        'pt': 'pt_PT',
+        'pl': 'pl_PL',
+        'ja': 'ja_JP',
+        'ru': 'ru_RU',
+        'zh': 'zh_CN',
+        'sv': 'sv_SE',
+        'dk': 'da_DK',
+        'fi': 'fi_FI',
+        'no': 'no_NO',
+    };
+
+    try {
+        var langCode = url.match("(http|https)://(.*)\.(wikipedia.org)")[2];
+        if (langCode in map) {
+            ret = map[langCode];
+        }
+    } catch (e) {
+    }
+
+    return ret;
+}
+
 function createWikipediaAutoSubmitUrl(url, title) {
-    var url = "https://flattr.com/submit/auto?user_id=USERNAME&url=URL&title=TITLE&description=DESCRIPTION&language=LANGUAGE&tags=TAGS&hidden=HIDDEN&category=CATEGORY";
-    url = url.replace('USERNAME', 'WikimediaFoundation');
-    url = url.replace('URL', encodeURIComponent(url));
-    url = url.replace('TITLE', encodeURIComponent(title));
-    url = url.replace('DESCRIPTION', '');
-    url = url.replace('TAGS', 'wikipedia,article');
-    url = url.replace('LANGUAGE', 'en_GB');
-    url = url.replace('HIDDEN', '0');
-    url = url.replace('CATEGORY', 'text');
-    return url;
+    return "https://flattr.com/submit/auto?user_id=WikimediaFoundation&url=" + encodeURIComponent(url) + "&title=" + encodeURIComponent(title) + "&language=" + getFlattrLangCodeForWikipediaUrl(url) + "&tags=wikipedia,article&hidden=0&category=text";
 }
 
 function isWikipedia(url) {

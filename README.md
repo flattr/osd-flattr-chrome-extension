@@ -11,7 +11,3 @@ Testing
  3. Click the + "Developer mode".
  4. Click 'Load unpacked extension' and choose the repo folder.
 
-Build
------
-
-There's a pre-built Chrome Extension File (.crx) at: [http://www.perthulin.com/static/osd-flattr-chrome-extension.crx](http://www.perthulin.com/static/osd-flattr-chrome-extension.crx)

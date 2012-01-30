@@ -1,0 +1,90 @@
+<html>
+	<head>
+		<title>Flattr Chrome Extension Options</title>
+		<script>
+
+			// Saves options to localStorage.
+			function save_options() {
+				var select = document.getElementById('retries');
+				var retries = select.children[select.selectedIndex].value;
+				localStorage['retry_times'] = retries;
+
+				// Update status to let user know options were saved.
+				var status = document.getElementById('status');
+				status.innerHTML = ' Options Saved.';
+				setTimeout(function() { status.innerHTML = ''; }, 2000);
+			}
+
+			// Restores select box state to saved value from localStorage.
+			function restore_options() {
+				var retries = localStorage['retry_times'];
+				if (!retries) {
+					return;
+				}
+				var select = document.getElementById('retries');
+				for (var i = 0; i < select.children.length; i++) {
+					var child = select.children[i];
+					if (child.value == retries) {
+						child.selected = 'true';
+						break;
+					}
+				}
+			}
+
+		</script>
+
+		<body onload="restore_options()">
+
+			<h2><a href="https://chrome.google.com/webstore/detail/opjnhfkbdoopgfbefgbdkpjnbghffmln">Flattr Chrome Extension</a> Options</h2>
+			<p> Levels to Retry:
+			<select id="retries">
+				<option value="-1">-1 (direct match only)</option>
+				<option value="0">0 (direct or domain match)</option>
+				<option value="1">1 </option>
+				<option value="2">2 </option>
+				<option value="3">3 </option>
+				<option value="4">4 </option>
+				<option value="5" selected>5 </option>
+				<option value="6">6 </option>
+				<option value="7">7 </option>
+				<option value="8">8 </option>
+				<option value="9">9 </option>
+			</select>
+			</p>
+			<button onclick="save_options()">Save</button><b id="status"> </b>
+			<br /><br />
+			<table border="1" style="text-align:center;">
+				<tr><th>Retries</th><th>Result</th></tr>
+				<tr>
+					<td>-1</td>
+					<td>Only display on a direct flattr url match</td>
+					</tr><tr>
+					<td>0</td>
+					<td>Check domain root for a flattr thing if no 1:1 url match</td>
+					</tr><tr>
+					<td>&gt; 0</td>
+					<td>Check for a match &lt;Retries&gt; levels in from original url</td>
+				</tr>
+			</table>
+			<h3>Example</h3>
+			<p><em>Retries = 2 for request url: 
+				http://github.com/uname/project/api/model/user.php</em></p>
+			<table border="1" style="text-align:center;">
+				<tr><th>Retry #</th><th>Search flattr for URL</th></tr>
+				<tr>
+					<td>Original (-1)</td>
+					<td>http://github.com/uname/project/api/model/user.php</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>http://github.com/uname/project/api/model</td>
+					</tr><tr>
+					<td>1</td>
+					<td>http://github.com/uname/project/api</td>
+					</tr><tr>
+					<td>0</td>
+					<td>http://github.com (0 is always the domain root url)</td>
+				</tr>
+			</table>
+		</body>
+	</html>

@@ -1,4 +1,4 @@
-// This script listens for new tab events and inspects the url for flattr'ability
+// This script listens for new tab events & inspects the url for flattr'ability
 //
 // If a flattr thing is found, an icon is displayed in the browser url bar,
 //
@@ -6,9 +6,9 @@
 // in a new tab/window.
 
 // Global variables
-var furls = [];	    // associative object containing flattr'able urls
-var debug = false;  // log a bunch of debug info to the console
-var entries = 0;    // debug var to track the total # of urls checked via the API
+var furls = [];		// associative object containing flattr'able urls
+var debug = false;	// log a bunch of debug info to the console
+var entries = 0;	// debug var to track total # of urls checked via the API
 
 // debug logging
 function dlog(str) {
@@ -34,10 +34,10 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 		return;
 	}
 
-	tabUrl = stripHashes(tab.url);
-
-	if (isWikipedia(tabUrl)) {
-		furls[tabUrl] = createWikipediaAutoSubmitUrl(tabUrl, tab.title);
+	if (isWikipedia(tab.url)) {
+		// strip hashes for wikipedia urls, results in one flattr thing per page
+		furls[escape(tab.url)] =
+			createWikipediaAutoSubmitUrl(stripHashes(tab.url), tab.title);
 		chrome.pageAction.show(tabId);
 	} else {
 		entries++; // debug
@@ -49,11 +49,11 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 			retries = 5;
 		}
 
-		// Call the flattr API (possibly recursively) to search for tabUrl
-		findFlattrThingForUrl(tabUrl, retries, function(thing) {
-			// callback function stores the link and sets the icon in the url bar
+		// Call the flattr API (possibly recursively) to search for tab.url
+		findFlattrThingForUrl(tab.url, retries, function(thing) {
+			// callback function stores the link & sets the icon in the url bar
 			if (thing) {
-				furls[tabUrl] = thing.link;
+				furls[escape(tab.url)] = thing.link;
 				chrome.pageAction.show(tabId);
 			}
 		});
@@ -64,7 +64,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 // open the flattr.com thing page in a new tab/window.
 chrome.pageAction.onClicked.addListener(function (tab) {
 	// pull the appropriate flattr url from the global array
-	furl = furls[stripHashes(tab.url)];
+	furl = furls[escape(tab.url)];
 	if (furl) {
 		window.open(furl);
 	}

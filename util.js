@@ -37,8 +37,8 @@ function isWikipedia(url) {
 	return url.match('(http|https)://(.*\.)?(wikipedia.org)');
 }
 
-// Strip hash anchors - they broke the furls array when used for an index
-// also, arguably better for wikipedia, at least from a load standpoint
+// Cuts off a string at the first hash character
+// (works fine for wikipedia, not good for twitter and others)
 function stripHashes(url) {
 	hashLoc = url.indexOf('#')
 	if (hashLoc != -1) {

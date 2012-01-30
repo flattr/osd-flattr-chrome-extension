@@ -14,7 +14,15 @@
     "https://api.flattr.com/"
   ],
   "icons": {
+    "16": "favicon.ico",
     "48": "icon_48.png",
     "128": "icon_128.png"
+  },
+  "intents": {
+    "http://webintents.org/share" : {
+      "type" : ["text/uri-list"],
+      "path" : "intent.html",
+      "title" : "Share link to Flattr"
+    }
   }
 }

@@ -56,7 +56,7 @@ function stripHashes(url) {
 function findFlattrThingForUrl(url, recRetries, callback) {
 	var xhr = new XMLHttpRequest(),
 	lookupUrl = 'https://api.flattr.com/rest/v2/things/lookup?q=' +
-	encodeURIComponent(url);
+        encodeURIComponent(url);
 
 	xhr.open('GET', lookupUrl, true); // HEAD makes a 400 Bad Request...
 	dlog('requesting:'+lookupUrl);

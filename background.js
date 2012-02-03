@@ -52,10 +52,18 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 		// Call the flattr API (possibly recursively) to search for tab.url
 		findFlattrThingForUrl(tab.url, retries, function(thing) {
 			// callback function stores the link & sets the icon in the url bar
-			if (thing) {
-				furls[escape(tab.url)] = thing.link;
-				chrome.pageAction.show(tabId);
+            var url;
+
+            if (thing.message === 'flattrable') {
+                url = 'https://flattr.com/submit/auto?url=' + escape(tab.url);
+            } else if (thing) {
+                url = thing.link;
 			}
+
+            if (url) {
+				furls[escape(tab.url)] = url;
+				chrome.pageAction.show(tabId);
+            }
 		});
 	}
 });

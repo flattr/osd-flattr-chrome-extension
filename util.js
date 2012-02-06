@@ -70,7 +70,7 @@ function findFlattrThingForUrl(url, recRetries, callback) {
 			// If we have a match, we're done, callback to show the plugin icon
 			if (response.message !== 'not_found') {
 				dlog('match on:'+url);
-				callback(response);
+				callback(response, url);
 			} else {
 				// Recursion base case; no match found, so no-op
 				if (recRetries < 0) {

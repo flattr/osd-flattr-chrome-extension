@@ -6,7 +6,7 @@
 // in a new tab/window.
 
 // Global variables
-var furls = [];		// associative object containing flattr'able urls
+var furls = {};		// associative object containing flattr'able urls
 var debug = false;	// log a bunch of debug info to the console
 var entries = 0;	// debug var to track total # of urls checked via the API
 
@@ -50,14 +50,18 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 		}
 
 		// Call the flattr API (possibly recursively) to search for tab.url
-		findFlattrThingForUrl(tab.url, retries, function(thing) {
+		findFlattrThingForUrl(tab.url, retries, function(response, matchedUrl) {
 			// callback function stores the link & sets the icon in the url bar
             var url;
 
-            if (thing.message === 'flattrable') {
-                url = 'https://flattr.com/submit/auto?url=' + escape(tab.url);
-            } else if (thing) {
-                url = thing.link;
+            if (response === false) {
+                return; // not found
+            }
+
+            if (response.message === 'flattrable') {
+                url = 'https://flattr.com/submit/auto?url=' + escape(matchedUrl);
+            } else if (response) {
+                url = response.link;
 			}
 
             if (url) {

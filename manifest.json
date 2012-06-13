@@ -7,6 +7,12 @@
     "default_icon": "icon_128.png",
     "default_title": "Flattr this!"
   },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["contentscript.js"]
+    }
+  ],
   "permissions": [
     "tabs",
     "https://api.flattr.com/"

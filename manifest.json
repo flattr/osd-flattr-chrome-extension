@@ -1,6 +1,6 @@
 {
   "name": "Flattr",
-  "version": "0.6",
+  "version": "0.8",
   "description": "Displays a flattr button for Wikipedia and other popular sites that do not have flattr buttons visible",
   "background_page": "background.html",
   "page_action": {

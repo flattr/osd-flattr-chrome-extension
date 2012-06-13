@@ -1,8 +1,7 @@
 {
   "name": "Flattr",
-  "version": "0.7",
-  "description": "Displays a flattr button for Wikipedia and other sites that do not have flattr buttons visible",
-  "options_page": "options/index.html",
+  "version": "0.6",
+  "description": "Displays a flattr button for Wikipedia and other popular sites that do not have flattr buttons visible",
   "background_page": "background.html",
   "page_action": {
     "default_icon": "icon_128.png",

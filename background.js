@@ -17,7 +17,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 lookupUrl = thing.link;
             }
 
-            if (url) {
+            if (lookupUrl) {
                 chrome.pageAction.show(tabId);
             }
         });

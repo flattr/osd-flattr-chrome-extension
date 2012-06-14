@@ -1,5 +1,6 @@
 var lookupUrl = undefined;
 var relPaymentLink = undefined;
+var canonicalUrl = undefined;
 
 // Listen for any changes to the URL of any tab. If URL
 // exists, we show our extension icon in the address field.
@@ -10,19 +11,25 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         lookupUrl = createWikipediaAutoSubmitUrl(tab.url, tab.title);
         chrome.pageAction.show(tabId);
     } else {
-        showFlattrButtonIfThingExistsForUrl(tab.url, tabId);
+        showFlattrButtonIfThingExistsForUrl(tab.url, tabId, function(url) {
+            lookupUrl = url;
+        });
     }
 });
 
 function showFlattrButtonIfThingExistsForUrl(url, tabId, callback) {
     findFlattrThingForUrl(url, function(thing) {
+        var url;
+
         if (thing.message === 'flattrable') {
-            lookupUrl = 'https://flattr.com/submit/auto?url=' + escape(url);
+            url = 'https://flattr.com/submit/auto?url=' + escape(url);
         } else if (thing) {
-            lookupUrl = thing.link;
+            url = thing.link;
         }
-        if (lookupUrl) {
+
+        if (url) {
             chrome.pageAction.show(tabId);
+            callback(url);
         }
     });
 }
@@ -34,12 +41,14 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
         relPaymentLink = request.relPaymentLink;
         chrome.pageAction.show(sender.tab.id);
     } else if (request.canonicalUrl) {
-        showFlattrButtonIfThingExistsForUrl(request.canonicalUrl, sender.tab.id);
+        showFlattrButtonIfThingExistsForUrl(request.canonicalUrl, sender.tab.id, function(url) {
+            canonicalUrl = url;
+        });
     }
 });
 
 // When the icon in address field is clicked, we open the flattr.com
 // thing page in a new tab/window.
 chrome.pageAction.onClicked.addListener(function (tab) {
-    window.open(lookupUrl || relPaymentLink);
+    window.open(lookupUrl || relPaymentLink || canonicalUrl);
 });

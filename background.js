@@ -10,27 +10,31 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         lookupUrl = createWikipediaAutoSubmitUrl(tab.url, tab.title);
         chrome.pageAction.show(tabId);
     } else {
-        findFlattrThingForUrl(tab.url, function(thing) {
-            if (thing.message === 'flattrable') {
-                lookupUrl = 'https://flattr.com/submit/auto?url=' + escape(tab.url);
-            } else if (thing) {
-                lookupUrl = thing.link;
-            }
-
-            if (lookupUrl) {
-                chrome.pageAction.show(tabId);
-            }
-        });
+        showFlattrButtonIfThingExistsForUrl(tab.url, tabId);
     }
 });
 
-// See if contentscript.js finds a rel payment link. If the regular flattr API
-// lookup has discovered a thing registered for the active URL, then that one
-// is used insteead.
+function showFlattrButtonIfThingExistsForUrl(url, tabId, callback) {
+    findFlattrThingForUrl(url, function(thing) {
+        if (thing.message === 'flattrable') {
+            lookupUrl = 'https://flattr.com/submit/auto?url=' + escape(url);
+        } else if (thing) {
+            lookupUrl = thing.link;
+        }
+        if (lookupUrl) {
+            chrome.pageAction.show(tabId);
+        }
+    });
+}
+
+// See if contentscript.js finds a rel payment link or canonical url. 
+// Use these if the regular flattr API lookup does not find a matching thing.
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     if (request.relPaymentLink) {
         relPaymentLink = request.relPaymentLink;
         chrome.pageAction.show(sender.tab.id);
+    } else if (request.canonicalUrl) {
+        showFlattrButtonIfThingExistsForUrl(request.canonicalUrl, sender.tab.id);
     }
 });
 

@@ -1,3 +1,4 @@
-if (window.intent && window.intent.type.indexOf('text/') === 0) {
-	window.location = 'https://flattr.com/submit/auto?url=' + encodeURI(window.intent.data);
+var intent = window.intent || window.webkitIntent;
+if (intent && intent.type === 'text/uri-list') {
+	window.location = 'https://flattr.com/submit/auto?url=' + encodeURI(intent.data);
 }

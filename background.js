@@ -17,12 +17,12 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     }
 });
 
-function showFlattrButtonIfThingExistsForUrl(url, tabId, callback) {
-    findFlattrThingForUrl(url, function(thing) {
+function showFlattrButtonIfThingExistsForUrl(urlToTest, tabId, callback) {
+    findFlattrThingForUrl(urlToTest, function(thing) {
         var url;
 
         if (thing.message === 'flattrable') {
-            url = 'https://flattr.com/submit/auto?url=' + escape(url);
+            url = 'https://flattr.com/submit/auto?url=' + escape(urlToTest);
         } else if (thing) {
             url = thing.link;
         }
